@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Treasure Hunt Game</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #fceabb, #f8b500);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  h1 {
+    color: #ff4d6d;
+    margin: 10px 0;
+  }
+
+  #message {
+    margin: 10px;
+    font-size: 18px;
+    color: #333;
+  }
+
+  #gameBoard {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-gap: 10px;
+    margin-top: 20px;
+  }
+
+  .tile {
+    width: 80px;
+    height: 80px;
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+    user-select: none;
+  }
+
+  .tile:hover {
+    transform: scale(1.1);
+  }
+
+  #instaButton {
+    display: none;
+    margin-top: 20px;
+  }
+
+  #instaButton button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ff4d6d;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  footer {
+    margin-top: 20px;
+    color: #ff4d6d;
+  }
+</style>
+</head>
+<body>
+
+<h1>Treasure Hunt Game</h1>
+<div id="message">If you win the game, you will get my friend’s Instagram ID.</div>
+<div id="gameBoard"></div>
+<div id="instaButton">
+  <a href="https://instagram.com/the.kmno4" target="_blank">
+    <button>Visit My Friend on Instagram</button>
+  </a>
+</div>
+<footer>Made by Amna Islam</footer>
+
+<script>
+const gameBoard = document.getElementById("gameBoard");
+const instaButton = document.getElementById("instaButton");
+
+const totalTiles = 20;
+const totalTreasures = 5;
+let treasuresFound = 0;
+
+// Randomly select treasure positions
+let treasurePositions = [];
+while(treasurePositions.length < totalTreasures){
+  const pos = Math.floor(Math.random() * totalTiles);
+  if(!treasurePositions.includes(pos)){
+    treasurePositions.push(pos);
+  }
+}
+
+// Create tiles
+for(let i=0; i<totalTiles; i++){
+  const tile = document.createElement("div");
+  tile.className = "tile";
+  tile.dataset.treasure = treasurePositions.includes(i) ? "true" : "false";
+
+  tile.addEventListener("click", () => {
+    if(tile.textContent) return; // already clicked
+    if(tile.dataset.treasure === "true"){
+      tile.textContent = "💎";
+      treasuresFound++;
+      if(treasuresFound === totalTreasures){
+        // Show Instagram button when all treasures found
+        instaButton.style.display = "block";
+      }
+    } else {
+      tile.textContent = "❌";
+    }
+  });
+
+  gameBoard.appendChild(tile);
+}
+</script>
+
+</body>
+</html>
